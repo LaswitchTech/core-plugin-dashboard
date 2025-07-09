@@ -1,10 +1,3 @@
-//
-//   Core Framework - Script file
-//
-//   @license    MIT (https://mit-license.org/)
-//   @author     Louis Ouellet <louis@laswitchtech.com>
-//
-
 const Dashboard = function(board, container, callback = null){
 
     // Check if board is a string
@@ -100,7 +93,7 @@ const Dashboard = function(board, container, callback = null){
 
         // AJAX Request
         $.ajax({
-            url: '/endpoint.php/dashboard/save',
+            url: '/api/dashboard/save',
             headers: {'X-CSRF-Authorization': CSRF_KEY},
             type: 'POST',dataType: 'json',
             data: {"board": JSON.stringify(dash.board)},
