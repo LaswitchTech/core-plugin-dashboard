@@ -288,7 +288,7 @@ const Dashboard = function(board, container, callback = null){
                     const componentModal = component;
 
                     // Style the modal
-                    component.header.addClass('text-bg-success');
+                    component.addClass('modal-success');
                     component.footer.remove();
 
                     // Create buttons to add rows with 1 to 4 columns
