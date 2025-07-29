@@ -212,9 +212,8 @@ const Dashboard = function(board, container, callback = null){
 
         // Create a new row
         var row = $(document.createElement("div")).attr({
-            "class": "row border-light rounded-3 position-relative",
+            "class": "row position-relative",
             "data-rowId": dash.count,
-            "style": "border-style: dotted;",
         });
 
         // Set parameters
@@ -343,9 +342,8 @@ const Dashboard = function(board, container, callback = null){
 
             // Create a new row
             var col = $(document.createElement("div")).attr({
-                "class": "col border-light rounded-3 position-relative",
+                "class": "col position-relative",
                 "data-colId": row.count,
-                "style": "border-style: dotted;",
             });
 
             // Set parameters
@@ -531,12 +529,12 @@ const Dashboard = function(board, container, callback = null){
 
                                     // Create a new dashboard widget
                                     var widget = $(document.createElement("div")).attr({
-                                        "class": "dashboard-widget rounded-3 d-flex flex-row",
+                                        "class": "widget d-flex flex-row",
                                     });
 
                                     // Add the gadget to the widget
                                     widget.gadget = $(document.createElement("div")).attr({
-                                        "class":"gadget rounded-3 flex-grow-1",
+                                        "class":"gadget flex-grow-1",
                                     }).html(window[name](value)).prependTo(widget);
 
                                     // Add the widget to the preview
@@ -716,7 +714,7 @@ const Dashboard = function(board, container, callback = null){
 
                 // Create a new row
                 var widget = $(document.createElement("div")).attr({
-                    "class": "dashboard-widget rounded-3 d-flex flex-row",
+                    "class": "widget d-flex flex-row",
                     "data-widgetId": col.count,
                 }).appendTo(col);
 
@@ -738,18 +736,18 @@ const Dashboard = function(board, container, callback = null){
 
                 // Add the widget to the dashboard
                 widget.gadget = $(document.createElement("div")).attr({
-                    "class":"gadget rounded-3 flex-grow-1",
+                    "class":"gadget flex-grow-1",
                 }).html('').append(element).prependTo(widget);
 
                 // Add controls to the widget
                 widget.controls = $(document.createElement("div")).attr({
-                    "class":"flex-shrink-1 btn-group rounded-3 rounded-start-0",
+                    "class":"flex-shrink-1 btn-group rounded-start-0",
                     "data-action-mode":"edit",
                 }).appendTo(widget);
 
                 // Add a remove button to the widget
                 widget.controls.remove = $(document.createElement("button")).attr({
-                    "class":"btn btn-danger rounded-3 rounded-start-0",
+                    "class":"btn btn-danger rounded-start-0",
                 }).html('<i class="bi bi-trash"></i>').appendTo(widget.controls);
 
                 // Add a click event to the remove button
@@ -870,7 +868,7 @@ const DashboardWidgets = function(){
 }
 
 function dashboard_widget_placeholder(value = null){
-    return '<div class="card rounded-3 p-3 text-center">'+value+'</div>';
+    return '<div class="card p-3 text-center">'+value+'</div>';
 }
 
 function dashboard_meta_placeholder(key = null){
