@@ -34,7 +34,7 @@ const Dashboard = function(board, container, callback = null){
         "style":"top: -40px; left: 24px;"
     }).appendTo(dash);
     dash.controls.edit = $(document.createElement("button")).attr({
-        "class":"btn btn-sm btn-warning d-flex justify-content-center align-items-center",
+        "class":"btn btn-sm btn-warning",
         "data-action-mode":"view",
     }).html('<i class="bi bi-pencil me-1"></i>'+builder.Locale.get('Edit')).appendTo(dash.controls);
     dash.controls.edit.click(function(){
@@ -46,9 +46,8 @@ const Dashboard = function(board, container, callback = null){
         dash.render();
     });
     dash.controls.save = $(document.createElement("button")).attr({
-        "class":"btn btn-sm btn-success d-flex justify-content-center align-items-center w-100",
+        "class":"btn btn-sm btn-success",
         "data-action-mode":"edit",
-        "style":"margin-left: -24px;",
     }).html('<i class="bi bi-save me-1"></i>'+builder.Locale.get('Save')).appendTo(dash.controls);
     dash.controls.save.click(function(){
 
@@ -111,11 +110,9 @@ const Dashboard = function(board, container, callback = null){
         switch(dash.mode){
             case 'edit':
                 // Toggle the class d-none on all the data-action-mode
-                dash.find('[data-action-mode="edit"]').removeClass('d-none');
-                dash.find('[data-action-mode="view"]').addClass('d-none');
-                // Add borders to rows
-                dash.find('.row').removeClass('border-0').addClass('border-2 py-2');
-                dash.find('.col').removeClass('border-0').addClass('border-2');
+                $('[data-action-mode="edit"]').removeClass('d-none');
+                $('[data-action-mode="view"]').addClass('d-none');
+                dash.addClass('edit');
                 // Add margins on the first widget of each column
                 dash.find('[data-colId]').each(function(){
                     $(this).find('[data-widgetid]').first().removeClass('m-0');
@@ -123,11 +120,9 @@ const Dashboard = function(board, container, callback = null){
                 break;
             case 'view':
                 // Toggle the class d-none on all the data-action-mode
-                dash.find('[data-action-mode="edit"]').addClass('d-none');
-                dash.find('[data-action-mode="view"]').removeClass('d-none');
-                // Remove borders to rows
-                dash.find('.row').removeClass('border-2 py-2').addClass('border-0');
-                dash.find('.col').removeClass('border-2').addClass('border-0');
+                $('[data-action-mode="edit"]').addClass('d-none');
+                $('[data-action-mode="view"]').removeClass('d-none');
+                dash.removeClass('edit');
                 // Remove margins on the first widget of each column
                 dash.find('[data-colId]').each(function(){
                     $(this).find('[data-widgetid]').first().addClass('m-0');
@@ -827,6 +822,12 @@ const Dashboard = function(board, container, callback = null){
 
         // Create a new row
         dash.add(object.cols, object.childrens);
+    }
+
+    // Check if the callback is a function
+    if(typeof callback === 'function'){
+        // Call the callback function
+        callback(dash);
     }
 
     // Return the dashboard
