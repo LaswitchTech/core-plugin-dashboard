@@ -164,7 +164,7 @@ const Dashboard = function(board, container, callback = null){
                 const componentModal = component;
 
                 // Style the modal
-                component.header.addClass('text-bg-success');
+                component.addClass('modal-success');
                 component.footer.remove();
 
                 // Create buttons to add rows with 1 to 4 columns
@@ -464,7 +464,7 @@ const Dashboard = function(board, container, callback = null){
                         const componentModal = component;
 
                         // Style the modal
-                        component.header.addClass('text-bg-success');
+                        component.addClass('modal-success');
                         component.footer.submit
                             .addClass('btn-success')
                             .removeClass('btn-link')
@@ -686,7 +686,7 @@ const Dashboard = function(board, container, callback = null){
                             function(card,component){
 
                                 // Style the card
-                                component.header.addClass('text-bg-blue');
+                                component.addClass('modal-blue');
                                 component.body
                                     .addClass('text-bg-dark')
                                     .attr('style','background-image: none; border-bottom-left-radius: var(--bs-modal-inner-border-radius) !important;border-bottom-right-radius: var(--bs-modal-inner-border-radius) !important;');
