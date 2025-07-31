@@ -1,4 +1,4 @@
-<div class="col-12 p-0" id="layout"></div>
+<article id="layout"></article>
 <script>
     $(document).ready(function(){
         $.ajax({
