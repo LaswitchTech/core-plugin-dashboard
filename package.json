@@ -1,0 +1,23 @@
+{
+    "name": "dashboard",
+    "version": "1.0.0",
+    "description": "<p align=\"center\"><img src=\"picture.png\" /></p>",
+    "main": "script.js",
+    "scripts": {
+        "build:css": "sass --quiet-deps --load-path=node_modules src/scss/styles.scss styles.css --no-source-map --style=compressed",
+        "watch:css": "sass --quiet-deps --load-path=node_modules src/scss/styles.scss styles.css --watch --embed-source-map",
+        "build": "npm run build:css",
+        "dev": "concurrently \"npm run watch:css\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/LaswitchTech/core-plugin-dashboard.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/LaswitchTech/core-plugin-dashboard/issues"
+    },
+    "homepage": "https://github.com/LaswitchTech/core-plugin-dashboard#readme"
+}

@@ -34,7 +34,7 @@ const Dashboard = function(board, container, callback = null){
         "style":"top: -40px; left: 24px;"
     }).appendTo(dash);
     dash.controls.edit = $(document.createElement("button")).attr({
-        "class":"btn btn-sm btn-warning d-flex justify-content-center align-items-center",
+        "class":"btn btn-sm btn-warning",
         "data-action-mode":"view",
     }).html('<i class="bi bi-pencil me-1"></i>'+builder.Locale.get('Edit')).appendTo(dash.controls);
     dash.controls.edit.click(function(){
@@ -46,9 +46,8 @@ const Dashboard = function(board, container, callback = null){
         dash.render();
     });
     dash.controls.save = $(document.createElement("button")).attr({
-        "class":"btn btn-sm btn-success d-flex justify-content-center align-items-center w-100",
+        "class":"btn btn-sm btn-success",
         "data-action-mode":"edit",
-        "style":"margin-left: -24px;",
     }).html('<i class="bi bi-save me-1"></i>'+builder.Locale.get('Save')).appendTo(dash.controls);
     dash.controls.save.click(function(){
 
@@ -111,11 +110,9 @@ const Dashboard = function(board, container, callback = null){
         switch(dash.mode){
             case 'edit':
                 // Toggle the class d-none on all the data-action-mode
-                dash.find('[data-action-mode="edit"]').removeClass('d-none');
-                dash.find('[data-action-mode="view"]').addClass('d-none');
-                // Add borders to rows
-                dash.find('.row').removeClass('border-0').addClass('border-2 py-2');
-                dash.find('.col').removeClass('border-0').addClass('border-2');
+                $('[data-action-mode="edit"]').removeClass('d-none');
+                $('[data-action-mode="view"]').addClass('d-none');
+                dash.addClass('edit');
                 // Add margins on the first widget of each column
                 dash.find('[data-colId]').each(function(){
                     $(this).find('[data-widgetid]').first().removeClass('m-0');
@@ -123,11 +120,9 @@ const Dashboard = function(board, container, callback = null){
                 break;
             case 'view':
                 // Toggle the class d-none on all the data-action-mode
-                dash.find('[data-action-mode="edit"]').addClass('d-none');
-                dash.find('[data-action-mode="view"]').removeClass('d-none');
-                // Remove borders to rows
-                dash.find('.row').removeClass('border-2 py-2').addClass('border-0');
-                dash.find('.col').removeClass('border-2').addClass('border-0');
+                $('[data-action-mode="edit"]').addClass('d-none');
+                $('[data-action-mode="view"]').removeClass('d-none');
+                dash.removeClass('edit');
                 // Remove margins on the first widget of each column
                 dash.find('[data-colId]').each(function(){
                     $(this).find('[data-widgetid]').first().addClass('m-0');
@@ -169,7 +164,7 @@ const Dashboard = function(board, container, callback = null){
                 const componentModal = component;
 
                 // Style the modal
-                component.header.addClass('text-bg-success');
+                component.addClass('modal-success');
                 component.footer.remove();
 
                 // Create buttons to add rows with 1 to 4 columns
@@ -217,9 +212,8 @@ const Dashboard = function(board, container, callback = null){
 
         // Create a new row
         var row = $(document.createElement("div")).attr({
-            "class": "row border-light rounded-3 position-relative",
+            "class": "row position-relative",
             "data-rowId": dash.count,
-            "style": "border-style: dotted;",
         });
 
         // Set parameters
@@ -294,7 +288,7 @@ const Dashboard = function(board, container, callback = null){
                     const componentModal = component;
 
                     // Style the modal
-                    component.header.addClass('text-bg-success');
+                    component.addClass('modal-success');
                     component.footer.remove();
 
                     // Create buttons to add rows with 1 to 4 columns
@@ -348,9 +342,8 @@ const Dashboard = function(board, container, callback = null){
 
             // Create a new row
             var col = $(document.createElement("div")).attr({
-                "class": "col border-light rounded-3 position-relative",
+                "class": "col position-relative",
                 "data-colId": row.count,
-                "style": "border-style: dotted;",
             });
 
             // Set parameters
@@ -469,7 +462,7 @@ const Dashboard = function(board, container, callback = null){
                         const componentModal = component;
 
                         // Style the modal
-                        component.header.addClass('text-bg-success');
+                        component.addClass('modal-success');
                         component.footer.submit
                             .addClass('btn-success')
                             .removeClass('btn-link')
@@ -536,12 +529,12 @@ const Dashboard = function(board, container, callback = null){
 
                                     // Create a new dashboard widget
                                     var widget = $(document.createElement("div")).attr({
-                                        "class": "dashboard-widget rounded-3 d-flex flex-row",
+                                        "class": "widget d-flex flex-row",
                                     });
 
                                     // Add the gadget to the widget
                                     widget.gadget = $(document.createElement("div")).attr({
-                                        "class":"gadget rounded-3 flex-grow-1",
+                                        "class":"gadget flex-grow-1",
                                     }).html(window[name](value)).prependTo(widget);
 
                                     // Add the widget to the preview
@@ -691,7 +684,7 @@ const Dashboard = function(board, container, callback = null){
                             function(card,component){
 
                                 // Style the card
-                                component.header.addClass('text-bg-blue');
+                                component.addClass('modal-blue');
                                 component.body
                                     .addClass('text-bg-dark')
                                     .attr('style','background-image: none; border-bottom-left-radius: var(--bs-modal-inner-border-radius) !important;border-bottom-right-radius: var(--bs-modal-inner-border-radius) !important;');
@@ -721,7 +714,7 @@ const Dashboard = function(board, container, callback = null){
 
                 // Create a new row
                 var widget = $(document.createElement("div")).attr({
-                    "class": "dashboard-widget rounded-3 d-flex flex-row",
+                    "class": "widget d-flex flex-row",
                     "data-widgetId": col.count,
                 }).appendTo(col);
 
@@ -743,18 +736,18 @@ const Dashboard = function(board, container, callback = null){
 
                 // Add the widget to the dashboard
                 widget.gadget = $(document.createElement("div")).attr({
-                    "class":"gadget rounded-3 flex-grow-1",
+                    "class":"gadget flex-grow-1",
                 }).html('').append(element).prependTo(widget);
 
                 // Add controls to the widget
                 widget.controls = $(document.createElement("div")).attr({
-                    "class":"flex-shrink-1 btn-group rounded-3 rounded-start-0",
+                    "class":"flex-shrink-1 btn-group rounded-start-0",
                     "data-action-mode":"edit",
                 }).appendTo(widget);
 
                 // Add a remove button to the widget
                 widget.controls.remove = $(document.createElement("button")).attr({
-                    "class":"btn btn-danger rounded-3 rounded-start-0",
+                    "class":"btn btn-danger rounded-start-0",
                 }).html('<i class="bi bi-trash"></i>').appendTo(widget.controls);
 
                 // Add a click event to the remove button
@@ -829,6 +822,12 @@ const Dashboard = function(board, container, callback = null){
         dash.add(object.cols, object.childrens);
     }
 
+    // Check if the callback is a function
+    if(typeof callback === 'function'){
+        // Call the callback function
+        callback(dash);
+    }
+
     // Return the dashboard
     return dash;
 }
@@ -869,7 +868,7 @@ const DashboardWidgets = function(){
 }
 
 function dashboard_widget_placeholder(value = null){
-    return '<div class="card rounded-3 p-3 text-center">'+value+'</div>';
+    return '<div class="card p-3 text-center">'+value+'</div>';
 }
 
 function dashboard_meta_placeholder(key = null){
