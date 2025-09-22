@@ -91,13 +91,7 @@ const Dashboard = function(board, container, callback = null){
         }
 
         // AJAX Request
-        $.ajax({
-            url: '/api/dashboard/save',
-            headers: {'X-CSRF-Authorization': CSRF_KEY},
-            type: 'POST',dataType: 'json',
-            data: {"board": JSON.stringify(dash.board)},
-            success: function(response) {},
-        });
+        API.endpoint('/dashboard/save').data({"board": JSON.stringify(dash.board)}).execute();
 
         // Render the dashboard
         dash.render();
