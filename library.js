@@ -620,19 +620,25 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
                 // Iterate over widgets
                 for(const [widgetId, widget] of Object.entries(col.widgets)){
 
-                    // Add the widget to the column
-                    c.childrens.push({
-                        name: widget.name(),
-                        options: widget._options,
-                    });
+                    // Add the widget to the column if the it is in the DOM
+                    if(col.find('[data-widgetid="'+widgetId+'"]').length > 0){
+                        c.childrens.push({
+                            name: widget.name(),
+                            options: widget._options,
+                        });
+                    }
                 }
 
-                // Add the column to the row
-                r.childrens.push(c);
+                // Add the column to the row if the it is in the DOM
+                if(row.find('[data-colid="'+colId+'"]').length > 0){
+                    r.childrens.push(c);
+                }
             }
 
-            // Add the row to the board
-            board.push(r);
+            // Add the row to the board if the it is in the DOM
+            if($('[data-rowid="'+rowId+'"]').length > 0){
+                board.push(r);
+            }
         }
 
         // Check if we need to save to the database
