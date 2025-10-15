@@ -415,11 +415,11 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
                                                     // Add a widget
                                                     col.add(form.val().name, form.widget._options);
 
-                                                    // Trigger a render
-                                                    self.render();
-
                                                     // Close the modal
                                                     modal.hide();
+
+                                                    // Trigger a render
+                                                    self.render();
                                                 },
                                             }
                                         },
@@ -985,11 +985,11 @@ class Dashboard extends builder.UtilityClass {
                                                     // Update the configurations
                                                     self.#options(form.val());
 
-                                                    // Trigger a render
-                                                    self.render();
-
                                                     // Close the modal
                                                     modal.hide();
+
+                                                    // Trigger a render
+                                                    self.render();
                                                 },
                                             }
                                         },
