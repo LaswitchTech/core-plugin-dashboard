@@ -10,6 +10,7 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
         this._widgets = {};
         this._dashboard = null;
         this._count = 0;
+        this._interval = null;
         this._rows = {};
         this._mode = "view";
     }
@@ -30,6 +31,9 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
         if(this._properties.class.component){
             this._component.addClass(this._properties.class.component);
         }
+
+        // Load and Setup Auto-Refresh
+        this.setInterval();
 
         // Add a controls area
         this._component.controls = $(document.createElement("div")).attr({
@@ -79,6 +83,41 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
 
             // Render the dashboard
             self.render();
+        });
+
+        // Add Controls - Interval
+        this._component.controls.interval = $(document.createElement("div")).attr({
+            "class":"mx-1 d-inline-block",
+        }).appendTo(this._component.controls);
+        this._component.controls.interval.group = $(document.createElement("div")).attr({
+            "class":"input-group input-group-sm",
+            "data-action-mode": "edit",
+        }).appendTo(this._component.controls.interval);
+        this._component.controls.interval.label = $(document.createElement("span")).attr({
+            "class":"input-group-text",
+        }).html('<i class="bi bi-clock-history"></i>').appendTo(this._component.controls.interval.group);
+        this._component.controls.interval.input = $(document.createElement("input")).attr({
+            "type":"number",
+            "class":"form-control form-control-sm",
+            "min":"5",
+            "value":(this.getInterval() / 1000),
+            style: "max-width: 75px;",
+        }).appendTo(this._component.controls.interval.group);
+        this._component.controls.interval.uom = $(document.createElement("span")).attr({
+            "class":"input-group-text user-select-none",
+        }).html(this._builder.Locale.get('sec')).appendTo(this._component.controls.interval.group);
+        this._component.controls.interval.save = $(document.createElement("button")).attr({
+            "class":"btn btn-sm btn-success text-light",
+            "type":"button",
+        }).html('<i class="bi bi-save"></i>').appendTo(this._component.controls.interval.group).click(function(){
+            const interval = parseInt(self._component.controls.interval.input.val()) * 1000;
+            self.setInterval(interval);
+            self._builder.Toast.add({
+                color: 'success',
+                icon: 'check-circle',
+                title: self._builder.Locale.get('Success'),
+                body: self._builder.Locale.get('Auto-Refresh interval set to {0} seconds.').replace('{0}', (self._interval / 1000)),
+            });
         });
 
         // Create a button group
@@ -148,6 +187,58 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
         API.endpoint('/dashboard/fetch').execute(function(response){
             self.load(response.board);
         });
+    }
+
+    setInterval(interval = null){
+        if(interval === null) interval = localStorage.getItem(this._component.attr('id')+'Interval') ?? 60000; // in miliseconds default: 60000 (60 sec)
+        if(interval) localStorage.setItem(this._component.attr('id')+'Interval', interval);
+        return this;
+    }
+
+    getInterval(){
+        return localStorage.getItem(this._component.attr('id')+'Interval') ?? 60000;
+    }
+
+    start(){
+
+        // Set Self
+        const self = this;
+
+        // Check if the interval is already set
+        if(this._interval){
+            console.warn('Interval is already set, stopping the previous one.');
+            clearInterval(this._interval);
+        }
+
+        // Initial Request
+        this.request();
+
+        // Set the interval to check for changes
+        this._interval = setInterval(function(){
+            self.request();
+        }, this.getInterval());
+    }
+
+    stop(){
+        // Check if the interval is set
+        if(this._interval){
+            clearInterval(this._interval);
+            this._interval = null;
+        } else {
+            console.warn('No interval is currently set.');
+        }
+    }
+
+    request(){
+
+        // Iterate over all widgets and call their load method
+        for(const [rowId, row] of Object.entries(this._rows)){
+            for(const [colId, col] of Object.entries(row.columns)){
+                for(const [widgetId, widget] of Object.entries(col.widgets)){
+                    widget.load();
+                }
+            }
+        }
     }
 
     row(cols = 1){
@@ -582,6 +673,9 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
 
         // Render the dashboard
         this.render();
+
+        // Start auto-refresh
+        this.start();
     }
 
     clear(){
@@ -775,7 +869,7 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
         this._component.removeClass('d-none');
         this._component.controls.removeClass('d-none');
         if($('#pageTitle').length > 0) {
-            this._component.controls.addClass('d-inline-block');
+            this._component.controls.addClass('d-inline-flex');
         }
 
         // Check dashboard mode
