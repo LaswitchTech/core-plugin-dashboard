@@ -116,7 +116,7 @@ builder.add('layouts','dashboard', class extends builder.ComponentClass {
                 color: 'success',
                 icon: 'check-circle',
                 title: self._builder.Locale.get('Success'),
-                body: self._builder.Locale.get('Auto-Refresh interval set to {0} seconds.').replace('{0}', (self._interval / 1000)),
+                body: self._builder.Locale.get('Auto-Refresh interval set to {0} seconds.').replace('{0}', (interval / 1000)),
             });
         });
 
